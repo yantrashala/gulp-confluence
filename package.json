@@ -4,11 +4,14 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "gulp": "^3.9.1",
     "read": "^1.0.7",
     "superagent": "^3.3.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "gulp-istanbul": "^1.1.1",
+    "gulp-mocha": "^3.0.1",
     "mocha": "^3.2.0"
   },
   "repository": {
