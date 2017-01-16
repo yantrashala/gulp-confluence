@@ -1,0 +1,6 @@
+{
+  "username": "",
+  "password": "",
+  "baseUrl":  "https://tools.publicis.sapient.com/confluence",
+  "apiPath": "/rest/api"
+}
