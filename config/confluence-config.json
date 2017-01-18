@@ -1,6 +1,7 @@
 {
   "username": "",
   "password": "",
-  "baseUrl":  "https://tools.publicis.sapient.com/confluence",
-  "apiPath": "/rest/api"
+  "hostname":  "tools.publicis.sapient.com",
+  "apiPath": "/rest/api",
+  "port": 443
 }
