@@ -1,0 +1,20 @@
+BRANCH DELETE
+
+git branch -D <branchName>
+
+git push origin :<branchName>
+
+
+
+BRANCH RENAME
+
+git branch -m old_branch new_branch         # Rename branch locally    
+git push origin :old_branch                 # Delete the old branch    
+git push --set-upstream origin new_branch   # Push the new branch, set local branch to track the new remote
+
+
+Creating Tag
+
+git tag -a Music_Box_2.0.0_Tag -m "Music Box Master 2.0.0 Tag"
+
+git push origin Music_Box_2.0.0_Tag
