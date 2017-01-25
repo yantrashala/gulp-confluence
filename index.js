@@ -2,14 +2,19 @@ var read = require('read');
 var config = require('./config');
 var requestAPI = require('./lib/requestAPI');
 var async = require('async');
+var chalk = require('chalk');
 
 var username, password, confPageId, url, childUrl;
+var inputColor = chalk.cyan;
+var dataColor = chalk.green;
+var attachmentColor = chalk.magenta;
+var errColor = chalk.red;
 
-read({ prompt: 'Username: ', silent: false }, function(er, uname) {
+read({ prompt: inputColor('Username:'), silent: false }, function(er, uname) {
   username = uname;
-  read({ prompt: 'Password: ', silent: true }, function(er, pwd) {
+  read({ prompt: inputColor('Password:'), silent: true }, function(er, pwd) {
     password = pwd;
-    read({ prompt: 'Confluence Page ID: ', silent: false }, function(er, id) {
+    read({ prompt: inputColor('Confluence Page ID:'), silent: false }, function(er, id) {
       confPageId = id;
       updateConfig(username, password);
       loop();
@@ -32,7 +37,7 @@ function getAPIData(){
   url = config.confConfig.apiPath + "/content/" + confPageId + "?expand=body.storage,version";
   requestAPI(confPageId, config, url, false, '', false, function(err,data){
     if(err) {
-      console.log(err);
+      console.log(errColor(err));
       return err;
     }
     else {
@@ -44,9 +49,9 @@ function getAPIData(){
 
 function saveHTML(title){
   requestAPI(confPageId, config, url, false, title +'.html', true, function(err,data){
-    if(err) console.log(err);
+    if(err) console.log(errColor(err));
     else {
-      console.log(data);
+      console.log(dataColor(data));
     }
   });
 }
@@ -54,7 +59,7 @@ function saveHTML(title){
 function getAttachments(){
   var attachmentsURL = config.confConfig.apiPath + "/content/" + confPageId + "/child/attachment";
   requestAPI(confPageId, config, attachmentsURL, 'false', '', false, function(err,data1){
-    if(err) console.log(err);
+    if(err) console.log(errColor(err));
     else{
       data1 = JSON.parse(data1);
       if(data1.results.length > 0){
@@ -70,7 +75,7 @@ function getAttachments(){
 
 function saveAttachment(attachmentLink, title, cb){
   requestAPI(confPageId, config, attachmentLink, true, title, false, function(err,data){
-    console.log(data);
+    console.log(attachmentColor(data));
     cb();
   });
 }
