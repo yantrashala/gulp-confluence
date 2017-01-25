@@ -2,7 +2,7 @@ var read = require('read');
 var config = require('./config');
 var requestAPI = require('./lib/requestAPI');
 var async = require('async');
-var chalk = require('chalk'); // Added chalk for specifying colors in command prompt
+var chalk = require('chalk'); // Added chalk
 
 var username, password, confPageId, url, childUrl;
 var inputColor = chalk.cyan;
