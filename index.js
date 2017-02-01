@@ -11,11 +11,11 @@ var attachmentColor = chalk.magenta;
 var errColor = chalk.red;
 
 read({ prompt: inputColor('Username: '), silent: false }, function(er, uname) {
-  username = 'apal4';//uname;
+  username = uname;
   read({ prompt: inputColor('Password: '), silent: true }, function(er, pwd) {
-    password = 'dell25inspiron@';//pwd;
+    password = pwd;
     read({ prompt: inputColor('Confluence Page ID: '), silent: false }, function(er, id) {
-      confPageId = '530497630'; //'532131401'; //id;
+      confPageId = id;
       updateConfig(username, password);
       loop();
     });
@@ -28,12 +28,12 @@ function updateConfig(username, password){
 }
 
 function loop(){
-  getAPIData();
-  getAttachments();
-  callChildPages();
+  setTimeout(getAPIData(saveHTML), 1000);
+  setTimeout(getAttachments, 1000);
+  setTimeout(callChildPages, 1000);
 }
 
-function getAPIData(){
+function getAPIData(callHtml){
   url = config.confConfig.apiPath + "/content/" + confPageId + "?expand=body.storage,version";
   requestAPI(confPageId, config, url, false, '', false, function(err,data){
     if(err) {
@@ -42,7 +42,7 @@ function getAPIData(){
     }
     else {
       data = JSON.parse(data);
-      saveHTML(data.title);
+      setTimeout(callHtml(data.title), 2000);
     }
   });
 }
