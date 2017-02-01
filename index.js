@@ -11,11 +11,11 @@ var attachmentColor = chalk.magenta;
 var errColor = chalk.red;
 
 read({ prompt: inputColor('Username: '), silent: false }, function(er, uname) {
-  username = uname;
+  username = 'apal4';//uname;
   read({ prompt: inputColor('Password: '), silent: true }, function(er, pwd) {
-    password = pwd;
+    password = 'dell25inspiron@';//pwd;
     read({ prompt: inputColor('Confluence Page ID: '), silent: false }, function(er, id) {
-      confPageId = id;
+      confPageId = '530497630'; //'532131401'; //id;
       updateConfig(username, password);
       loop();
     });
@@ -38,7 +38,7 @@ function getAPIData(){
   requestAPI(confPageId, config, url, false, '', false, function(err,data){
     if(err) {
       console.log(errColor(err));
-      return err;
+      //return err;
     }
     else {
       data = JSON.parse(data);
