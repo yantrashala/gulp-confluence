@@ -28,12 +28,12 @@ function updateConfig(username, password){
 }
 
 function loop(){
-  setTimeout(getAPIData(saveHTML), 1000);
+  setTimeout(getAPIData(saveMD), 1000);
   setTimeout(getAttachments, 1000);
   setTimeout(callChildPages, 1000);
 }
 
-function getAPIData(callHtml){
+function getAPIData(callMD){
   url = config.confConfig.apiPath + "/content/" + confPageId + "?expand=body.storage,version";
   requestAPI(confPageId, config, url, false, '', false, function(err,data){
     if(err) {
@@ -42,13 +42,13 @@ function getAPIData(callHtml){
     }
     else {
       data = JSON.parse(data);
-      setTimeout(callHtml(data.title), 2000);
+      setTimeout(callMD(data.title), 2000);
     }
   });
 }
 
-function saveHTML(title){
-  requestAPI(confPageId, config, url, false, title +'.html', true, function(err,data){
+function saveMD(title){
+  requestAPI(confPageId, config, url, false, title +'.md', true, function(err,data){
     if(err) console.log(errColor(err));
     else {
       console.log(dataColor(data));
