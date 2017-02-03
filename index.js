@@ -11,11 +11,11 @@ var attachmentColor = chalk.magenta;
 var errColor = chalk.red;
 
 read({ prompt: inputColor('Username: '), silent: false }, function(er, uname) {
-  username = 'apal4'; //uname;
+  username = uname;
   read({ prompt: inputColor('Password: '), silent: true }, function(er, pwd) {
-    password = 'dell25inspiron@'; //pwd;
+    password = pwd;
     read({ prompt: inputColor('Confluence Page ID: '), silent: false }, function(er, id) {
-      confPageId = '530497630'; //'525937433'; //id;
+      confPageId = id;
       updateConfig(username, password);
       loop(confPageId, '');
     });
