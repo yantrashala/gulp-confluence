@@ -11,13 +11,13 @@ var attachmentColor = chalk.magenta;
 var errColor = chalk.red;
 
 read({ prompt: inputColor('Username: '), silent: false }, function(er, uname) {
-  username = uname;
+  username = 'apal4'; //uname;
   read({ prompt: inputColor('Password: '), silent: true }, function(er, pwd) {
-    password = pwd;
+    password = 'dell25inspiron@'; //pwd;
     read({ prompt: inputColor('Confluence Page ID: '), silent: false }, function(er, id) {
-      confPageId = id;
+      confPageId = '530497630'; //'525937433'; //id;
       updateConfig(username, password);
-      loop(confPageId);
+      loop(confPageId, '');
     });
   });
 });
@@ -27,32 +27,32 @@ function updateConfig(username, password){
   config.confConfig.password  = password;
 }
 
-function loop(confPageId){
-  getAPIData(confPageId, saveMD, function(err, data){
+function loop(confPageId, path){
+  getAPIData(confPageId, saveMD, path, function(err, data){
     if (err) console.log(errColor(err));
     else {
       console.log(dataColor(data));
-      getAttachments(confPageId,function(err, data){
+      getAttachments(confPageId, path, function(err, data){
         if(err) {
           console.log(errColor(err));
         }
         else{
-          callChildPages(confPageId);
+          callChildPages(confPageId, path);
         }
       });
     };
   });
 }
 
-function getAPIData(confPageId, callMD, callback){
+function getAPIData(confPageId, callMD, path, callback){
   var url = config.confConfig.apiPath + "/content/" + confPageId + "?expand=body.storage,version";
-  requestAPI(confPageId, config, url, false, '', false, function(err,data){
+  requestAPI(confPageId, config, url, false, '', false, path, function(err,data){
     if(err) {
       callback(err, null);
     }
     else {
       data = JSON.parse(data);
-      callMD(confPageId, data.title, url, function(err,data){
+      callMD(confPageId, data.title, url, path, function(err,data){
         if (err) callback(err, null);
         else callback(null, data);
       });
@@ -60,8 +60,8 @@ function getAPIData(confPageId, callMD, callback){
   });
 }
 
-function saveMD(confPageId, title, url, callback){
-  requestAPI(confPageId, config, url, false, title +'.md', true, function(err,data){
+function saveMD(confPageId, title, url, path, callback){
+  requestAPI(confPageId, config, url, false, title +'.md', true, path, function(err,data){
     if(err) {
       callback(err, null);
     }
@@ -71,9 +71,9 @@ function saveMD(confPageId, title, url, callback){
   });
 }
 
-function getAttachments(confPageId, callback){
+function getAttachments(confPageId, path, callback){
   var attachmentsURL = config.confConfig.apiPath + "/content/" + confPageId + "/child/attachment";
-  requestAPI(confPageId, config, attachmentsURL, 'false', '', false, function(err,data1){
+  requestAPI(confPageId, config, attachmentsURL, 'false', '', false, '', function(err,data1){
     if(err) {
       callback(err, null);
     }
@@ -82,7 +82,7 @@ function getAttachments(confPageId, callback){
       if(data1.results.length > 0){
         async.eachSeries(data1.results, function iteratee(result, cb) {
         if (result) {
-          saveAttachment(confPageId, result._links.download,result.title,cb);
+          saveAttachment(confPageId, result._links.download, result.title, path, cb);
         }
         });
       }
@@ -91,22 +91,22 @@ function getAttachments(confPageId, callback){
   });
 }
 
-function saveAttachment(confPageId, attachmentLink, title, callback){
-  requestAPI(confPageId, config, attachmentLink, true, title, false, function(err,data){
+function saveAttachment(confPageId, attachmentLink, title, path, callback){
+  requestAPI(confPageId, config, attachmentLink, true, title, false, path, function(err,data){
     console.log(attachmentColor(data));
     callback();
   });
 }
 
-function callChildPages(confPageId){
+function callChildPages(confPageId, path){
   var childUrl = config.confConfig.apiPath + "/content/" + confPageId + "/child/page";
-  requestAPI(confPageId, config, childUrl, false, '', false, function(err,data){
+  requestAPI(confPageId, config, childUrl, false, '', false, '', function(err,data){
     if(err) console.log(errColor(err));
     else{
       data = JSON.parse(data);
         if(data.results.length > 0){
           for (var index in data.results){
-            loop(data.results[index].id);
+            loop(data.results[index].id, path + data.results[index].id + '\\');
           }
         }
       }
