@@ -3,6 +3,7 @@ var config = require('./config');
 var requestAPI = require('./lib/requestAPI');
 var async = require('async');
 var chalk = require('chalk');
+var sanitize = require('sanitize-filename');
 
 var username, password, confPageId;
 var inputColor = chalk.cyan;
@@ -106,7 +107,7 @@ function callChildPages(confPageId, path){
       data = JSON.parse(data);
         if(data.results.length > 0){
           for (var index in data.results){
-            loop(data.results[index].id, path + data.results[index].id + '\\');
+            loop(data.results[index].id, path + sanitize(data.results[index].title) + '\\');
           }
         }
       }
