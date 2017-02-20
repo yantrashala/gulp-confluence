@@ -53,7 +53,7 @@ function getAPIData(confPageId, callMD, path, callback){
     }
     else {
       data = JSON.parse(data);
-      callMD(confPageId, data.title, url, path, function(err,data){
+      callMD(confPageId, sanitize(data.title), url, path, function(err,data){
         if (err) callback(err, null);
         else callback(null, data);
       });
@@ -83,7 +83,7 @@ function getAttachments(confPageId, path, callback){
       if(data1.results.length > 0){
         async.eachSeries(data1.results, function iteratee(result, cb) {
         if (result) {
-          saveAttachment(confPageId, result._links.download, result.title, path, cb);
+          saveAttachment(confPageId, result._links.download, sanitize(result.title), path, cb);
         }
         });
       }
